@@ -1,5 +1,7 @@
 # Video-Watermark  
 
-https://github.com/user-attachments/assets/6730d258-9bf6-4f5a-a373-658c79384f22  
+
+The video formats supported are MP4 and MKV.  
+The image formats supported are JPG, PNG, and GIF.  
 
 
