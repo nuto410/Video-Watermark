@@ -9,8 +9,8 @@ if not shutil.which("ffmpeg"):
     exit()
 
 # 加載視頻文件
-# video = VideoFileClip("video.mp4")
-video = VideoFileClip("video.mkv")
+video = VideoFileClip("video.mp4")
+# video = VideoFileClip("video.mkv")
 
 # 視頻文件 長寬
 Vwidth, Vheight = video.size
@@ -18,19 +18,30 @@ Vwidth, Vheight = video.size
 # 加載圖片文件
 image = ImageClip("image.png")
 
-# 使用PIL調整圖片大小
-scale_factor = 0.5  # 圖片占視頻的比例(0.5=50%)
-new_width = int(Vwidth * scale_factor)
-new_height = int(Vheight * scale_factor)
-image = image.resize((new_width, new_height))
+# 圖片 長寬
+Iwidth, Iheight = image.size
 
-image = image.set_duration(5)  # 圖片持續時間(秒)
+# 使用PIL調整圖片大小(比例調整圖片大小)
+scale_factor = 0.1  # 0.5=50%
+Iwidth = int(Iwidth * scale_factor)
+Iheight = int(Iheight * scale_factor)
+image = image.resize((Iwidth, Iheight))
+print("調整後圖片尺寸:", image.size)
+
+if Iwidth > Vwidth or Iheight > Vheight:
+    print(Iwidth, Vwidth, Iheight, Vheight)
+    print("圖片尺寸大於視頻尺寸，請調整圖片尺寸")
+    exit()
+
+image = image.set_duration(3)  # 圖片持續時間(秒)
 image = image.set_position(("center", "center"))  # 圖片位置
-image = image.set_start(10)  # 圖片插入時間
+# set_position options
+# ("left", "top")  # 左上 ("center", "top"))  # 上中 ("right", "top")  # 右上 ("left", "center")  # 左中 ("center", "center")  # 中心 ("right", "center")  # 右中 ("left", "bottom")  # 左下 ("center", "bottom")  # 下中 ("right", "bottom")  # 右下
+image = image.set_start(5)  # 圖片插入時間
 
 # 合成視頻
 final_video = CompositeVideoClip([video, image])
 
 # 保存新視頻
-# final_video.write_videofile("output_video.mp4", codec="libx264", fps=24)
-final_video.write_videofile("output_video.mkv", codec="libx264", fps=24)
+final_video.write_videofile("output_video.mp4", codec="libx264", fps=24)
+# final_video.write_videofile("output_video.mkv", codec="libx264", fps=24)
